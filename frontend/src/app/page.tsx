@@ -1,24 +1,81 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import type { Item, ItemsResponse } from './types';
+
+const API_BASE = 'http://localhost:8000/api/v1';
+
 export default function HomePage() {
+  const [items, setItems] = useState<Item[]>([]);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+
+  const fetchItems = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/items/get-items`);
+      const data: Item[] | ItemsResponse = await res.json();
+      if (Array.isArray(data)) {
+        setItems(data as Item[]);
+      } else if ('data' in data) {
+        setItems(data.data);
+      }
+    } catch (err) {
+      console.error('Failed to load items', err);
+    }
+  };
+
+  const createItem = async () => {
+    try {
+      await fetch(`${API_BASE}/items/create-item`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, description }),
+      });
+      setTitle('');
+      setDescription('');
+      fetchItems();
+    } catch (err) {
+      console.error('Failed to create item', err);
+    }
+  };
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
+
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-slate-900 to-slate-700 p-8 text-white">
-      <div className="text-center max-w-2xl bg-slate-800 p-10 rounded-xl shadow-2xl">
-        <h1 className="text-5xl font-bold mb-6 tracking-tight">
-          Collaborative Tree Editor
-        </h1>
-        <p className="text-lg text-slate-300 mb-8 leading-relaxed">
-          Welcome to the interactive tree editor! Organize your ideas, code
-          snippets, project structures, or any hierarchical data with ease.
-          Drag, drop, edit, and save your creations.
-        </p>
-        <p className="text-lg text-slate-300 mb-10">
-          Click the button below to start a new tree. Your work will be
-          &quot;saved&quot; with a unique ID, allowing you to revisit it
-          (conceptually, for this demo).
-        </p>
+    <main className="p-6 max-w-xl mx-auto">
+      <h1 className="text-3xl font-bold mb-4">Item Manager</h1>
+      <ul className="space-y-2 mb-6">
+        {items.map((item) => (
+          <li key={item.id} className="border rounded p-2">
+            <span className="font-semibold">{item.title}</span>
+            {item.description && (
+              <p className="text-sm text-gray-700">{item.description}</p>
+            )}
+          </li>
+        ))}
+      </ul>
+      <div className="space-y-2 flex flex-col">
+        <input
+          className="border rounded p-2 text-black"
+          placeholder="Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <input
+          className="border rounded p-2 text-black"
+          placeholder="Description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+        <button
+          onClick={createItem}
+          className="bg-blue-600 text-white px-4 py-2 rounded"
+        >
+          Add Item
+        </button>
       </div>
-      <footer className="absolute bottom-8 text-slate-400 text-sm">
-        Powered by Next.js & Tailwind CSS
-      </footer>
     </main>
   );
 }

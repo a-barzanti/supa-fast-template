@@ -1,4 +1,5 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is a [Next.js](https://nextjs.org) example that consumes the FastAPI backend defined in `../backend`.
+It demonstrates a minimal interface that lists items from the API and allows creating new ones.
 
 ## Getting Started
 
