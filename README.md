@@ -17,9 +17,8 @@ Some guiding principles the justify some of the choices:
 - The versioning process should really be managed by the target application, so we just want to provide supporting files
 - The root project should not need package management (for Python nor Node.js)
   This means that scripting is in bash, and Git Related Library are simple/generic enough
-- The frontend includes a slim Next.js example that consumes the API defined in
-  `backend`. It uses the same React + Tailwind stack and demonstrates basic CRUD
-  operations against the `items` endpoints.
+- The frontend is using it's own monorepo structure, providing: component library, next.js client, and Storybook docs.
+- Workspace -> Team -> User
 
 - **Frontend**: Next.js + React + TypeScript + Tailwind CSS
 - **Backend**: FastAPI + PostgreSQL (via Supabase)
