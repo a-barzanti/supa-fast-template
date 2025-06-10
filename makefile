@@ -52,4 +52,4 @@ clean:
 
 ## Update environment
 envupdate:
-	bash scripts/update-env.sh
+	cd $(BACKEND_DIR) && bash scripts/update-env.sh

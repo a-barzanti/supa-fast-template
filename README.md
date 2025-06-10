@@ -56,6 +56,32 @@ launch supabase docker containers
 supabase start
 ```
 
+### 4. Prepare API
+
+####First Run
+
+Install libpq (the PostgreSQL client libraries) if needed:
+
+```bash
+# Ubuntu/Debian:
+sudo apt-get install libpq-dev
+# macOS (Homebrew)
+brew install postgresql
+```
+
+Python virtual environmet
+
+```bash
+# Create Venv
+uv venv
+# Then activate
+source .venv/bin/activate
+# And sync
+uv sync --all-groups --dev
+```
+
+For vsCode set the interpreter to `./backend/.venv/bin/python`
+
 > [!NOTE]
 >
 > ```bash
@@ -64,3 +90,7 @@ supabase start
 > ```
 >
 > modify the `.env` from the output of `supabase start` or run `supabase status` manually.
+
+```
+
+```
